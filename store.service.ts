@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
 
 
-
 // Add to providers in main module.ts file and inject into components
 // Do not add to the providers of the sub components
 // Define in constructor arguments, call initialize in the constructor
@@ -11,14 +10,16 @@ import { Http } from '@angular/http';
 export class StoreService {
     storage = {};
 
-    constructor(private http: Http) {}
+    constructor(private http: Http) { }
 
     sendData() {
-        this.http.post("http://localhost:3000/update", this.storage);
+        let seen = [];
+        window.postMessage({data: 'this.storage', type:"message"},'*');
+        // console.log(this.http.post("http://localhost:3000/update", this.storage));
     }
 
-    setData(obj) {
-        const cache = {}; 
+    setData(obj: any) {
+        const cache = {};
         const compName = obj.constructor.name;
         for (let key in obj) {
             if (typeof obj[key] !== 'function')
@@ -30,8 +31,10 @@ export class StoreService {
         this.storage[compName].push(cache);
         this.sendData();
     }
-    initialize(obj) {
+
+    initialize(obj: any) {
         const that = this;
-        obj.ngDoCheck = () => that.setData(obj);
+        if (obj.ngDoCheck)
+            obj.ngDoCheck = () => that.setData(obj);
     }
 }
