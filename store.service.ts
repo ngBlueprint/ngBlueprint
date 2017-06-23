@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
-
+import { inspect } from 'util';
 
 // Add to providers in main module.ts file and inject into components
 // Do not add to the providers of the sub components
@@ -13,8 +13,7 @@ export class StoreService {
     constructor(private http: Http) { }
 
     sendData() {
-        let seen = [];
-        window.postMessage({data: 'this.storage', type:"message"},'*');
+        window.postMessage({data: inspect(this.storage,true, 3 ), type:"message", source: "ngPulse"},'*');
         // console.log(this.http.post("http://localhost:3000/update", this.storage));
     }
 
