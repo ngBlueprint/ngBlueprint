@@ -13,7 +13,7 @@ export class StoreService {
     constructor(private http: Http) { }
 
     sendData() {
-        window.postMessage({data: inspect(this.storage,true, 3 ), type:"message", source: "ngPulse"},'*');
+        window.postMessage({data: inspect(this.storage, true, 5 ), type:"message", source: "ngPulse"},'*');
         // console.log(this.http.post("http://localhost:3000/update", this.storage));
     }
 
